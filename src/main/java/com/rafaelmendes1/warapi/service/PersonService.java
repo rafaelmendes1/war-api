@@ -49,6 +49,18 @@ public class PersonService {
         return personMapper.toDTO(person);
     }
 
+    public MessageResponseDTO updateById(Long id, PersonDTO personDTO) throws PersonNotFoundException {
+        verifyIfExists(id);
+
+        Person personToUpdate = personMapper.toModel(personDTO);
+
+        Person savedPerson = personRepository.save(personToUpdate);
+        return MessageResponseDTO
+                .builder()
+                .message("Update person with ID " + savedPerson.getId())
+                .build();
+    }
+
     public void delete(Long id) throws PersonNotFoundException {
         verifyIfExists(id);
         personRepository.deleteById(id);
